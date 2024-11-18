@@ -1,0 +1,1658 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{stats-spider-analysis\_publication}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{Analysis of stats per 90 minutes: Comparission between Top 3
+leagues in europe \& LATAM representative leagues by position in Season
+23-24}\label{analysis-of-stats-per-90-minutes-comparission-between-top-3-leagues-in-europe-latam-representative-leagues-by-position-in-season-23-24}
+
+    \section{Summary \& Objective}\label{summary-objective}
+
+    The project has the objective to compare the in-game stats/performance
+of the players grouped by the top 3 leagues in europe vs 3 of the most
+important leagues in LATAM (Brasileirao was excluded but might as well
+be taken into account).
+
+For this project, the leagues to be analyzed are the following:
+
+Top 3 europe leagues: - Premier League - Serie A - La Liga
+
+LATAM Leagues: - Liga MX - Argentina LPF - MLS
+
+Disclaimer: This project was made for educational purposes only. Data
+belongs to Wyscout. Special thanks to https://github.com/griffisben for
+pulling the data. If anyone deserves credit for this project, it's him.
+
+Full repository with code at:
+https://github.com/EmanuelNovelo/Big-Data-MCD-2024/blob/main/Notebooks/stats-spider-analysis.ipynb
+
+    The project was made using basic python libraries: - numpy - pandas -
+matplotlib - sklearn etc.
+
+PySpark was used for almost all the tasks, this was completely
+unnecessary, but I wanted to practice with it, also I like working with
+schemas.
+
+    \textbf{Summary of the final number of players analyzed by league across
+all positions:}
+
+\begin{itemize}
+\tightlist
+\item
+  La Liga: 475 players
+\item
+  Premier League: 453 players
+\item
+  Liga MX: 510 players
+\item
+  MLS: 686 players
+\item
+  Serie A: 496 players
+\item
+  Argentina LPF: 836 players
+\end{itemize}
+
+This count includes forwards, midfielders, defenders, and goalkeepers
+from each league.
+
+    \subsection{About the Data}\label{about-the-data}
+
+    The data represents in-game stats of the players of all leagues
+(Football-soccer) throughout the 2023-2024 season. Data also has
+player's personal information and demographics. Along the next lines of
+code, exploratory analysis on data and its schemas were performed to
+understand each leagues' information and data types.
+
+    Some important observations regarding 4 particular columns: - `Team' -
+`Team within timeframe' - `Competition' - `league'
+
+`Team' refers to the Team the player is currently playing for, while
+`Team within timeframe' refers to the team the player was playing for
+during the timeframe of the data. `Competition' referes to the league
+the player is currently playing in, while `league' refers to the league
+the player was playing in during the timeframe of the data.
+
+    \section{Creating subsets of the data by Position: Forwards,
+Midfielders, Defenders,
+Goalkeepers}\label{creating-subsets-of-the-data-by-position-forwards-midfielders-defenders-goalkeepers}
+
+    After subsetting the data, we can now calculate the statistics and
+obtain information by each Position sub-group.
+
+    Each Position sub-group has particular coolumnns or stats that are
+relevant to them and representative. The selection of the columns will
+depend on the analysis to be performed. For this particular example the
+next columns will be selected:
+
+    \subsection{Descriptive statistics by position
+group}\label{descriptive-statistics-by-position-group}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+===== FORWARDS =====
+
+Distinct Primary positions (8) in forwards:
++----------------+
+|Primary position|
++----------------+
+|AMF             |
+|RAMF            |
+|LWF             |
+|LW              |
+|RW              |
+|LAMF            |
+|RWF             |
+|CF              |
++----------------+
+
+
+Distinct Leagues (6) in forwards:
++-------------+
+|League       |
++-------------+
+|LaLiga       |
+|PremierLeague|
+|LigaMX       |
+|MLS          |
+|SerieA       |
+|ArgentinaLPF |
++-------------+
+
+
+Total observations in forwards: 1331
+
+Count of NA values per column in forwards:
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+------------+------------
++---------------+----------------------+---------------------+--------------+---
+------+
+|Full name|Team|Team within selected timeframe|Competition|League|Primary
+position|Age|Market value|Matches played|Minutes played|Foot|Goals per 90|Shots
+per 90|Dribbles per 90|Successful dribbles, \%|Touches in box per 90|Assists per
+90|xG per 90|
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+------------+------------
++---------------+----------------------+---------------------+--------------+---
+------+
+|0        |0   |0                             |0          |0     |0
+|0  |0           |0             |0             |0   |0           |0           |0
+|0                     |0                    |0             |0        |
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+------------+------------
++---------------+----------------------+---------------------+--------------+---
+------+
+
+
+===== MIDFIELDERS =====
+
+Distinct Primary positions (5) in midfielders:
++----------------+
+|Primary position|
++----------------+
+|LCMF            |
+|RCMF3           |
+|RCMF            |
+|DMF             |
+|LCMF3           |
++----------------+
+
+
+Distinct Leagues (6) in midfielders:
++-------------+
+|League       |
++-------------+
+|LaLiga       |
+|PremierLeague|
+|LigaMX       |
+|MLS          |
+|SerieA       |
+|ArgentinaLPF |
++-------------+
+
+
+Total observations in midfielders: 605
+
+Count of NA values per column in midfielders:
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+-------------+-----------
+-------+-----------------+---------+-------------------------+------------------
+----+-----------------------+
+|Full name|Team|Team within selected timeframe|Competition|League|Primary
+position|Age|Market value|Matches played|Minutes played|Foot|Passes per
+90|Accurate passes, \%|Key passes per 90|xA per 90|Progressive passes per
+90|Received passes per 90|Progressive runs per 90|
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+-------------+-----------
+-------+-----------------+---------+-------------------------+------------------
+----+-----------------------+
+|0        |0   |0                             |0          |0     |0
+|0  |0           |0             |0             |0   |0            |0
+|0                |0        |0                        |0                     |0
+|
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+-------------+-----------
+-------+-----------------+---------+-------------------------+------------------
+----+-----------------------+
+
+
+===== DEFENDERS =====
+
+Distinct Primary positions (10) in defenders:
++----------------+
+|Primary position|
++----------------+
+|LWB             |
+|RCB3            |
+|LB5             |
+|LB              |
+|RB              |
+|LCB             |
+|RCB             |
+|CB              |
+|RB5             |
+|RWB             |
++----------------+
+
+
+Distinct Leagues (6) in defenders:
++-------------+
+|League       |
++-------------+
+|LaLiga       |
+|PremierLeague|
+|LigaMX       |
+|MLS          |
+|SerieA       |
+|ArgentinaLPF |
++-------------+
+
+
+Total observations in defenders: 1252
+
+Count of NA values per column in defenders:
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+-------------------------
+----------+--------------------+-------------------+-------------------+--------
+--------------+--------------------+------------+
+|Full name|Team|Team within selected timeframe|Competition|League|Primary
+position|Age|Market value|Matches played|Minutes played|Foot|Successful
+defensive actions per 90|Interceptions per 90|Aerial duels per 90|Aerial duels
+won, \%|Sliding tackles per 90|Shots blocked per 90|Fouls per 90|
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+-------------------------
+----------+--------------------+-------------------+-------------------+--------
+--------------+--------------------+------------+
+|0        |0   |0                             |0          |0     |0
+|0  |0           |0             |0             |0   |0
+|0                   |0                  |0                  |0
+|0                   |0           |
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+-------------------------
+----------+--------------------+-------------------+-------------------+--------
+--------------+--------------------+------------+
+
+
+===== GOALKEEPERS =====
+
+Distinct Primary positions (1) in goalkeepers:
++----------------+
+|Primary position|
++----------------+
+|GK              |
++----------------+
+
+
+Distinct Leagues (6) in goalkeepers:
++-------------+
+|League       |
++-------------+
+|LaLiga       |
+|PremierLeague|
+|LigaMX       |
+|MLS          |
+|SerieA       |
+|ArgentinaLPF |
++-------------+
+
+
+Total observations in goalkeepers: 268
+
+Count of NA values per column in goalkeepers:
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+---------------------+---
+---------+-----------------+----------------------+------------+
+|Full name|Team|Team within selected timeframe|Competition|League|Primary
+position|Age|Market value|Matches played|Minutes played|Foot|Conceded goals per
+90|Save rate, \%|xG against per 90|Prevented goals per 90|Exits per 90|
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+---------------------+---
+---------+-----------------+----------------------+------------+
+|0        |0   |0                             |0          |0     |0
+|0  |0           |0             |0             |0   |0                    |0
+|0                |0                     |0           |
++---------+----+------------------------------+-----------+------+--------------
+--+---+------------+--------------+--------------+----+---------------------+---
+---------+-----------------+----------------------+------------+
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+===== FORWARDS =====
+
++-------------+-----+
+|League       |count|
++-------------+-----+
+|LaLiga       |182  |
+|PremierLeague|180  |
+|LigaMX       |205  |
+|MLS          |261  |
+|SerieA       |170  |
+|ArgentinaLPF |333  |
++-------------+-----+
+
+
+===== MIDFIELDERS =====
+
++-------------+-----+
+|League       |count|
++-------------+-----+
+|LaLiga       |75   |
+|PremierLeague|65   |
+|LigaMX       |89   |
+|MLS          |109  |
+|SerieA       |100  |
+|ArgentinaLPF |167  |
++-------------+-----+
+
+
+===== DEFENDERS =====
+
++-------------+-----+
+|League       |count|
++-------------+-----+
+|LaLiga       |178  |
+|PremierLeague|172  |
+|LigaMX       |180  |
+|MLS          |254  |
+|SerieA       |182  |
+|ArgentinaLPF |286  |
++-------------+-----+
+
+
+===== GOALKEEPERS =====
+
++-------------+-----+
+|League       |count|
++-------------+-----+
+|LaLiga       |40   |
+|PremierLeague|36   |
+|LigaMX       |36   |
+|MLS          |62   |
+|SerieA       |44   |
+|ArgentinaLPF |50   |
++-------------+-----+
+
+    \end{Verbatim}
+
+    \section{Spider Diagrams by group of Leagues and
+Positions}\label{spider-diagrams-by-group-of-leagues-and-positions}
+
+    To determine the main characteristics of each position group, we can
+calculate the average values for key performance metrics. We will
+calculate the mean values for each column in the subset DataFrames.
+Variables will be chosen based on the next criteria: Objective by
+position. - Forward: Evaluate the ability to score goals, create chances
+and contribute to the team's attack. - Midfielder: Evaluate
+distribution, creattion of chances, defensive contribution and ability
+to create attacks. - Defender: Evaluate ability to stop attacks, win
+duels, and block actions. - Goalkeeper: Evaluate ability to stop shots,
+air duels, and defensive contribution.
+
+    \subsection{Obtaining the summary statistics for each
+subset}\label{obtaining-the-summary-statistics-for-each-subset}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Aggregated metrics for Forwards:
+                                Mean      Median   Min           Max
+Age                     2.567919e+01       25.00  16.0  4.000000e+01
+Market value            7.407476e+06  1800000.00   0.0  1.800000e+08
+Matches played          2.083546e+01       21.00   1.0  4.200000e+01
+Minutes played          1.266137e+03     1061.00  46.0  3.804000e+03
+Goals per 90            1.994741e-01        0.16   0.0  1.960000e+00
+Shots per 90            1.790075e+00        1.75   0.0  8.380000e+00
+Dribbles per 90         3.754290e+00        3.29   0.0  1.442000e+01
+Successful dribbles, \%  4.872772e+01       50.00   0.0  1.000000e+02
+Touches in box per 90   2.806957e+00        2.74   0.0  9.600000e+00
+Assists per 90          9.839970e-02        0.06   0.0  1.610000e+00
+xG per 90               2.307288e-01        0.20   0.0  1.530000e+00
+Aggregated metrics for Midfielders:
+                                   Mean      Median    Min           Max
+Age                        2.611074e+01       26.00  17.00  3.800000e+01
+Market value               6.271322e+06  1500000.00   0.00  1.200000e+08
+Matches played             2.240661e+01       25.00   1.00  4.300000e+01
+Minutes played             1.555547e+03     1466.00  45.00  4.101000e+03
+Passes per 90              3.947326e+01       37.70  12.72  7.759000e+01
+Accurate passes, \%         8.443757e+01       85.18  59.46  9.796000e+01
+Key passes per 90          2.137851e-01        0.17   0.00  2.000000e+00
+xA per 90                  6.236364e-02        0.04   0.00  4.300000e-01
+Progressive passes per 90  5.448777e+00        5.26   0.00  1.133000e+01
+Received passes per 90     2.759835e+01       25.78   6.14  6.600000e+01
+Progressive runs per 90    1.062050e+00        0.89   0.00  5.180000e+00
+Aggregated metrics for Defenders:
+                                             Mean       Median    Min  \textbackslash{}
+Age                                  2.651038e+01       26.000  16.00
+Market value                         5.438958e+06  1500000.000   0.00
+Matches played                       2.054153e+01       22.000   1.00
+Minutes played                       1.629850e+03     1600.500  45.00
+Successful defensive actions per 90  8.958786e+00        8.870   1.02
+Interceptions per 90                 4.448339e+00        4.415   0.00
+Aerial duels per 90                  3.131086e+00        2.890   0.00
+Aerial duels won, \%                  4.977273e+01       51.000   0.00
+Sliding tackles per 90               3.790176e-01        0.290   0.00
+Shots blocked per 90                 3.876757e-01        0.330   0.00
+Fouls per 90                         9.662220e-01        0.900   0.00
+
+                                              Max
+Age                                  3.900000e+01
+Market value                         1.000000e+08
+Matches played                       4.200000e+01
+Minutes played                       4.057000e+03
+Successful defensive actions per 90  2.009000e+01
+Interceptions per 90                 1.011000e+01
+Aerial duels per 90                  1.579000e+01
+Aerial duels won, \%                  1.000000e+02
+Sliding tackles per 90               4.030000e+00
+Shots blocked per 90                 2.710000e+00
+Fouls per 90                         4.250000e+00
+Aggregated metrics for Goalkeepers:
+                                Mean       Median     Min           Max
+Age                     2.942910e+01       29.000  18.000  4.300000e+01
+Market value            4.226213e+06  1000000.000   0.000  4.500000e+07
+Matches played          1.855597e+01       17.000   1.000  4.200000e+01
+Minutes played          1.832701e+03     1664.500  52.000  4.166000e+03
+Conceded goals per 90   1.290896e+00        1.200   0.000  3.670000e+00
+Save rate, \%            6.847175e+01       69.505   0.000  1.000000e+02
+xG against per 90       1.246642e+00        1.170   0.070  3.830000e+00
+Prevented goals per 90 -4.369030e-02       -0.009  -1.197  1.781000e+00
+Exits per 90            1.233694e+00        1.205   0.000  4.640000e+00
+    \end{Verbatim}
+
+    \subsection{Standardize the data to prepare it for
+Graphs}\label{standardize-the-data-to-prepare-it-for-graphs}
+
+    The metrics shown below were the ones chosen as representative for each
+position group.
+
+    The RobustScaler is an effective scaling technique for datasets with
+outliers or variables that exhibit different ranges and distributions,
+which is often the case in sports metrics. Here's why it is particularly
+useful and why it's a good choice for your analysis. Unlike the
+MinMaxScaler, which scales the data based on the minimum and maximum
+values, or the StandardScaler, which centers and scales data based on
+mean and standard deviation, the RobustScaler leverages the median and
+interquartile range (IQR) (i.e., the range between the 25th and 75th
+percentiles). By using the median and IQR, the RobustScaler is less
+sensitive to outliers, meaning that extreme values in your data won't
+overly influence the scaling process. This is especially important in
+sports datasets, where outliers (like exceptionally high performance
+metrics for certain players) can skew the scaling when using other
+methods. The RobustScaler centers the data around the median and scales
+based on the IQR, which provides a robust measure of central tendency
+and dispersion. For example, metrics such as ``Goals per 90'' or
+``Successful Dribbles \%'' can vary widely, and the scaling via IQR
+helps these metrics remain meaningful in visual comparisons.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+===== FORWARDS =====
+
+League: ArgentinaLPF
+Teams (110): Atlético Tucumán, Racing Club, Belgrano, Rosario Central, Banfield,
+Corinthians, Seattle Sounders, Benfica, Argentinos Juniors, Ceará,
+Independiente, Celta de Vigo, Lanús, San Lorenzo, Unión Santa Fe, River Plate,
+Godoy Cruz, Barracas Central, CF Montréal, Talleres Córdoba, Defensa y Justicia,
+Ñublense, Lecce, Platense, Sporting Cristal, Vasco da Gama, Santos Laguna,
+Huracán, Necaxa, Unión La Calera, Newell's Old Boys, Gimnasia La Plata, Colón,
+Vélez Sarsfield, Olimpia, Mamelodi Sundowns, Boca Juniors, Instituto, Fortaleza,
+Genoa, Juárez, Everton, Athletico Paranaense, Tigre, Basel, Bologna, Grêmio,
+Estudiantes, Pachuca, Sarmiento, Al Ittihad Kalba, Fiorentina, Beroe, Racing,
+Cerro Largo, Querétaro, Neftchi, Macará, Sportivo Luqueño, Cusco, Coquimbo
+Unido, Central Córdoba SdE, Estudiantes Caseros, Rotonda, Athens Kallithea, New
+York City, O'Higgins, Gimnasia Jujuy, Quilmes, Santos, Botoşani, Deportivo
+Madryn, Arsenal, Volos NFC, Boston River, Aldosivi, Anderlecht, Inter Miami,
+Liverpool, Atlanta, Peñarol, Atlético Rafaela, Kifissia, Orenburg, Rosario
+Central Res., Almagro, PAS Giannina, Nacional Asunción, Junior, Asteras
+Tripolis, Unión Española, Independiente Res., Deportivo Táchira, Colón Res.,
+Vélez Sársfield Res., Deportivo Pereira, Tristán Suárez, Atlanta United, Defensa
+y Justicia Res., San Lorenzo Res., Alvarado, Delfin, Nueva Chicago, Gimnasia
+Mendoza, Newell's Old Boys Res., Racing Club Res., Argentino Merlo, Godoy Cruz
+Res., Llaneros, Rampla Juniors
+Teams within selected timeframe (28): Atlético Tucumán, Instituto, Belgrano,
+Rosario Central, Banfield, Talleres Córdoba, Lanús, Estudiantes, Argentinos
+Juniors, Newell's Old Boys, Independiente, Godoy Cruz, San Lorenzo, Central
+Córdoba SdE, River Plate, Barracas Central, Gimnasia La Plata, Huracán, Arsenal,
+Colón, Defensa y Justicia, Platense, Tigre, Racing Club, Vélez Sarsfield, Unión
+Santa Fe, Boca Juniors, Sarmiento
+Total players: 333
+
+League: LaLiga
+Teams (37): Barcelona, Girona, Valencia, Sevilla, Celta de Vigo, Athletic
+Bilbao, Rayo Vallecano, Getafe, Deportivo Alavés, Atlético Madrid, Cádiz,
+Mallorca, Villarreal, Granada, Almería, Osasuna, Las Palmas, Real Madrid, Real
+Betis, Real Sociedad, Bayern München, Botafogo, Benfica, Real Valladolid, Bayer
+Leverkusen, Palmeiras, Sheffield United, Nice, Bournemouth, Cardiff City,
+Recreativo Granada, Valencia Mestalla, Salernitana, Leganés, Racing Ferrol,
+Alcorcón, Atlético Mineiro U20
+Teams within selected timeframe (20): Barcelona, Girona, Valencia, Sevilla,
+Celta de Vigo, Athletic Bilbao, Rayo Vallecano, Getafe, Deportivo Alavés,
+Atlético Madrid, Cádiz, Mallorca, Villarreal, Granada, Almería, Osasuna, Las
+Palmas, Real Madrid, Real Betis, Real Sociedad
+Total players: 182
+
+League: LigaMX
+Teams (55): Guadalajara, Cruz Azul, Pumas UNAM, Tigres UANL, Juárez, Necaxa,
+Querétaro, América, Club Tijuana, León, Puebla, Monterrey, Atlas, Toluca,
+Mazatlán, Santos Laguna, Atlético de San Luis, Pachuca, Millonarios, Talleres
+Córdoba, Portland Timbers, Athletico Paranaense, Cruzeiro, Fortaleza, Columbus
+Crew, Corinthians, Fluminense, Barcelona, Racing Club, Pachuca U23, Juárez U23,
+Atlético Nacional, CSKA Moskva, Estudiantes, Independiente, Mazatlán U23,
+América U23, Atlético de San Luis U23, Toluca U23, Atlas U23, Santos, León U23,
+Real Oviedo, Lanús, Santos Laguna U23, Peñarol, Cruz Azul U23, Atlanta United,
+Club Tijuana U23, Necaxa U23, Vélez Sarsfield, Monterrey U23, Celaya, Tigres
+UANL U23, Unión Española
+Teams within selected timeframe (18): Guadalajara, Cruz Azul, Pumas UNAM, Tigres
+UANL, Juárez, Necaxa, Querétaro, América, Club Tijuana, León, Puebla, Monterrey,
+Atlas, Toluca, Mazatlán, Santos Laguna, Atlético de San Luis, Pachuca
+Total players: 205
+
+League: MLS
+Teams (83): Sporting KC, SJ Earthquakes, Philadelphia Union, Nashville SC, Los
+Angeles FC, Seattle Sounders, Cincinnati, Columbus Crew, Atlanta United, DC
+United, Vancouver Whitecaps, Monterrey, New England, Houston Dynamo, Orlando
+City, New York City, Toronto, Los Angeles Galaxy, Hellas Verona, Minnesota
+United, Dallas, Chicago Fire, Austin FC, Nacional, Portland Timbers, Fortaleza,
+Real Salt Lake, Como, Charlotte FC, New York RB, CF Montréal, Colorado Rapids,
+Al Fateh, Inter Miami, Al Rayyan, St. Louis City , Granada, Atlético de San
+Luis, Real Valladolid, Fehérvár, Flamengo, Fluminense, Vélez Sarsfield,
+Libertad, Cangzhou Mighty Lions, Trabzonspor, Bandırmaspor, Medellín, Platense,
+Lugano, América de Cali, AEK Athens, Sochi, Samsunspor, Juárez U23, Mazatlán,
+Junior, Hull City, Guadalajara, Banfield, Horsens, Udinese, Olimpia, San
+Lorenzo, Sporting Gijón, Oulu, Universidad Católica, Club Tijuana, Vasco da
+Gama, San Antonio, Charleston Battery, Tampa Bay Rowdies, Neftchi, Viborg,
+Orange County SC,  Shenzhen Peng City, Larne, Gillingham, Ventura County, Las
+Vegas Lights, Minnesota United II, Toronto II, Orlando City B
+Teams within selected timeframe (29): Sporting KC, SJ Earthquakes, Philadelphia
+Union, Nashville SC, Los Angeles FC, Seattle Sounders, Cincinnati, Columbus
+Crew, Atlanta United, DC United, Vancouver Whitecaps, New England, Houston
+Dynamo, Orlando City, New York City, Toronto, Los Angeles Galaxy, Charlotte FC,
+Minnesota United, Dallas, Chicago Fire, Austin FC, Portland Timbers, New York
+RB, Real Salt Lake, St. Louis City , CF Montréal, Colorado Rapids, Inter Miami
+Total players: 261
+
+League: PremierLeague
+Teams (38): Bournemouth, Aston Villa, Nottingham Forest, Chelsea, Manchester
+United, West Ham United, Tottenham Hotspur, Newcastle United, Everton, Arsenal,
+Luton Town, Manchester City, Liverpool, Fulham, Crystal Palace, Brentford,
+Wolverhampton Wanderers, Brighton, Burnley, Sheffield United, Olympique
+Lyonnais, Real Betis, Nantes, Galatasaray, Southampton, Rangers, Eintracht
+Frankfurt, Granada, Wolverhampton Wanderers U21, Hull City, Leeds United,
+Sevilla, Hajduk Split, Peterborough United, Borussia Dortmund, Exeter City,
+Brighton U21, West Ham United U21
+Teams within selected timeframe (20): Bournemouth, Aston Villa, Nottingham
+Forest, Chelsea, Manchester United, West Ham United, Tottenham Hotspur,
+Newcastle United, Everton, Arsenal, Luton Town, Manchester City, Liverpool,
+Fulham, Crystal Palace, Brentford, Wolverhampton Wanderers, Brighton, Burnley,
+Sheffield United
+Total players: 180
+
+League: SerieA
+Teams (35): Frosinone, Genoa, Sassuolo, Torino, Hellas Verona, Salernitana,
+Bologna, Lazio, Napoli, Roma, Internazionale, Atalanta, Udinese, Monza, Milan,
+Empoli, Lecce, Cagliari, Juventus, Fiorentina, Como, Olympiacos Piraeus, Hajduk
+Split, Orlando City, Mallorca, Ankaragücü, Racing Santander, Malmö FF, Rijeka,
+Norwich City, Bari, Montpellier, Nottingham Forest, Almería, Everton
+Teams within selected timeframe (20): Frosinone, Genoa, Sassuolo, Torino, Hellas
+Verona, Salernitana, Bologna, Lazio, Napoli, Roma, Internazionale, Atalanta,
+Udinese, Monza, Milan, Empoli, Lecce, Cagliari, Juventus, Fiorentina
+Total players: 170
+
+
+===== MIDFIELDERS =====
+
+League: ArgentinaLPF
+Teams (69): Belgrano, San Lorenzo, Instituto, Johor Darul Ta'zim, Unión Santa
+Fe, Monterrey, Atlético Tucumán, Independiente, Newell's Old Boys, Estudiantes,
+Racing Club, Platense, Tigre, Lanús, Medellín, Botafogo SP, Argentinos Juniors,
+Banfield, Vélez Sarsfield, Riga FC, Barracas Central, Palmeiras, Olympiacos
+Piraeus, Boca Juniors, Huracán, Defensa y Justicia, Racing, Toluca, Sarmiento,
+Porto, General Caballero JLM, Gimnasia La Plata, Unión La Calera, Independiente
+del Valle, Rosario Central, Colón, Talleres Córdoba, River Plate, Liverpool,
+Panetolikos FC, Atlético Mineiro, Olimpia, Leganés, Central Córdoba SdE, Sport
+Recife, Tacuary, Salernitana, O'Higgins, Godoy Cruz, New York City, Cobreloa,
+Volos NFC, Udinese, Nacional, Club Atlético Mitre, Huachipato, Cerro Largo,
+Peñarol, Racing Club Res., Independiente Res., Quilmes, Unión Española, Newell's
+Old Boys Res., La Serena, Carlos Mannucci, Lanús Res., Arsenal, Ben Hur, San
+Martín San Juan
+Teams within selected timeframe (28): Belgrano, Barracas Central, Instituto, San
+Lorenzo, Central Córdoba SdE, Estudiantes, Platense, Independiente, Newell's Old
+Boys, Unión Santa Fe, Banfield, Racing Club, Tigre, Atlético Tucumán, River
+Plate, Lanús, Colón, Argentinos Juniors, Vélez Sarsfield, Arsenal, Huracán, Boca
+Juniors, Defensa y Justicia, Sarmiento, Gimnasia La Plata, Rosario Central,
+Talleres Córdoba, Godoy Cruz
+Total players: 167
+
+League: LaLiga
+Teams (21): Valencia, Getafe, Girona, Las Palmas, Cádiz, Real Madrid, Real
+Sociedad, Villarreal, Atlético Madrid, Granada, Celta de Vigo, Mallorca,
+Sevilla, Osasuna, Rayo Vallecano, Barcelona, Almería, Celta de Vigo B,
+Vojvodina, Sevilla Atlético, Brighton
+Teams within selected timeframe (17): Valencia, Getafe, Girona, Las Palmas,
+Cádiz, Real Madrid, Real Sociedad, Villarreal, Atlético Madrid, Granada, Celta
+de Vigo, Mallorca, Sevilla, Osasuna, Rayo Vallecano, Barcelona, Almería
+Total players: 75
+
+League: LigaMX
+Teams (29): América, Tigres UANL, Guadalajara, Puebla, Cruz Azul, Pumas UNAM,
+Querétaro, Santos Laguna, Club Tijuana, Pachuca, Mazatlán, Necaxa, Monterrey,
+Atlas, Toluca, Juárez, León, Cruzeiro, Everton, Atlético de San Luis, Godoy
+Cruz, Nacional, Juárez U23, Independiente, Monterrey U18, Pachuca U23,
+Universidad Guadalajara, Puebla U23, América U23
+Teams within selected timeframe (18): América, Tigres UANL, Guadalajara, Puebla,
+Cruz Azul, Pumas UNAM, Querétaro, Santos Laguna, Club Tijuana, Pachuca,
+Mazatlán, Necaxa, Monterrey, Atlas, Toluca, Juárez, León, Atlético de San Luis
+Total players: 89
+
+League: MLS
+Teams (44): Columbus Crew, Houston Dynamo, Sporting KC, Los Angeles FC, SJ
+Earthquakes, Colorado Rapids, Cincinnati, DC United, Charlotte FC, New England,
+Al Hazem, Portland Timbers, Austin FC, St. Louis City , Real Salt Lake, CF
+Montréal, Los Angeles Galaxy, Vancouver Whitecaps, Philadelphia Union, New York
+RB, Nashville SC, Dallas, Atlanta United, Toronto, Chicago Fire, Inter Miami,
+Barcelona, Gaziantep, Middlesbrough, Toulouse, Rangers, New York City, Maccabi
+Haifa, Seattle Sounders, Birmingham Legion, Tampa Bay Rowdies, San Antonio,
+Vitória Guimarães, PEC Zwolle, North Texas, Las Vegas Lights, Portland Timbers
+II, Stabæk, Chicago Fire II
+Teams within selected timeframe (26): Columbus Crew, Houston Dynamo, Sporting
+KC, Los Angeles FC, SJ Earthquakes, Colorado Rapids, Cincinnati, DC United,
+Charlotte FC, New England, Portland Timbers, Austin FC, St. Louis City , Real
+Salt Lake, CF Montréal, Los Angeles Galaxy, Vancouver Whitecaps, Philadelphia
+Union, New York RB, Nashville SC, Dallas, Toronto, Inter Miami, New York City,
+Minnesota United, Chicago Fire
+Total players: 109
+
+League: PremierLeague
+Teams (19): Newcastle United, Arsenal, Brighton, Aston Villa, Everton, Burnley,
+Brentford, Wolverhampton Wanderers, Sheffield United, Liverpool, Crystal Palace,
+Manchester United, Olympique Lyonnais, Luton Town, Stuttgart, Bournemouth,
+Nottingham Forest, Blackburn Rovers, Napoli
+Teams within selected timeframe (15): Newcastle United, Arsenal, Brighton, Aston
+Villa, Everton, Burnley, Brentford, Wolverhampton Wanderers, Sheffield United,
+Liverpool, Crystal Palace, Manchester United, Nottingham Forest, Luton Town,
+Bournemouth
+Total players: 65
+
+League: SerieA
+Teams (25): Roma, Napoli, Udinese, Monza, Genoa, Juventus, Lecce, Atalanta,
+Frosinone, Internazionale, Cagliari, Bologna, Empoli, Hellas Verona, Torino,
+Lazio, Salernitana, Milan, Granada, Sassuolo, Fenerbahçe, Palermo, RB Leipzig,
+Galatasaray, Roma U19
+Teams within selected timeframe (19): Roma, Napoli, Udinese, Monza, Genoa,
+Juventus, Lecce, Atalanta, Frosinone, Internazionale, Cagliari, Bologna, Empoli,
+Hellas Verona, Torino, Lazio, Salernitana, Milan, Sassuolo
+Total players: 100
+
+
+===== DEFENDERS =====
+
+League: ArgentinaLPF
+Teams (94): Colón, Godoy Cruz, Instituto, Talleres Córdoba, Atlético Tucumán,
+San Lorenzo, Rosario Central, Gimnasia La Plata, Argentinos Juniors, Belgrano,
+Huracán, Sarmiento, Junior, Lanús, Cerro Porteño, Boca Juniors, Independiente,
+Platense, Banfield, San Martín Mendoza, Arsenal, Unión Santa Fe, Udinese,
+Universidad de Chile, Newell's Old Boys, Defensa y Justicia, River Plate,
+Athletico Paranaense, Barracas Central, Racing Club, Cruz Azul, Fortaleza,
+Deportivo Madryn, Vélez Sarsfield, Estudiantes, Peñarol, Santos Laguna,
+Olympiacos Piraeus, Nacional Asunción, Zrinjski, Central Córdoba SdE, Unión La
+Calera, Universidad Católica, Tigre, Vasco da Gama, Union Saint-Gilloise,
+Anderlecht, Werder Bremen, O'Higgins, Criciúma, Salernitana, Deportes Iquique,
+Pafos, Cienciano, Brighton, Santa Fe, Melgar, Sport Boys, Pachuca, San Martín
+San Juan, Club Atlético Mitre, Libertad, Inter Miami, U Craiova 1948, Talleres
+Remedios, Delfin, San Miguel, Aucas, América de Cali, Audax Italiano, Temperley,
+Sporting Cristal, Gimnasia Mendoza, Deportivo Maipú, San Martín Tucumán, Colo
+Colo, Patronato, Gimnasia Jujuy, Gimnasia La Plata Res., Águilas Doradas,
+Argentinos Juniors Res., Atromitos, Guaraní, Defensa y Justicia Res., Atlanta,
+Racing Club Res., Belgrano Res., Botafogo, Los Angeles Galaxy, Arsenal Res.,
+Estudiantes Res, Talleres de Córdoba U18, Lanús Res., Unión Santa Fe Res.
+Teams within selected timeframe (28): Colón, Godoy Cruz, Instituto, Talleres
+Córdoba, Atlético Tucumán, San Lorenzo, Rosario Central, Gimnasia La Plata,
+Barracas Central, Belgrano, Huracán, Sarmiento, Central Córdoba SdE, Tigre,
+Independiente, Lanús, Arsenal, Platense, Banfield, Unión Santa Fe, Vélez
+Sarsfield, Newell's Old Boys, Defensa y Justicia, River Plate, Estudiantes,
+Racing Club, Boca Juniors, Argentinos Juniors
+Total players: 286
+
+League: LaLiga
+Teams (38): Las Palmas, Granada, Valencia, Girona, Celta de Vigo, Barcelona,
+Athletic Bilbao, Rayo Vallecano, Deportivo Alavés, Atlético Madrid, Real Madrid,
+Osasuna, Getafe, Almería, Cádiz, Real Sociedad, Sevilla, Mallorca, Real Betis,
+Villarreal, Reims, Botafogo, Villarreal B, Celta de Vigo B, Gent, Albacete, Real
+Sociedad B, Milan, Mirandés, Al Ittihad, Barcelona B, Elche, Shanghai Shenhua,
+Al Shabab, Getafe B, Betis Deportivo, Fenerbahçe, Spartak Moskva
+Teams within selected timeframe (20): Las Palmas, Granada, Valencia, Girona,
+Celta de Vigo, Barcelona, Athletic Bilbao, Rayo Vallecano, Deportivo Alavés,
+Atlético Madrid, Real Madrid, Osasuna, Getafe, Almería, Cádiz, Real Sociedad,
+Sevilla, Mallorca, Real Betis, Villarreal
+Total players: 178
+
+League: LigaMX
+Teams (36): Atlético de San Luis, Tigres UANL, Necaxa, Pumas UNAM, Mazatlán,
+León, Guadalajara, Atlas, Querétaro, Puebla, Cruz Azul, Monterrey, Pachuca,
+América, Toluca, Club Tijuana, Juárez, Santos Laguna, Los Angeles FC,
+Corinthians, América de Cali, Peñarol, Real Oviedo, Juárez U23, Tlaxcala,
+Metropolitanos, Querétaro U23, Venados, Wanderers, Tapatío, Puebla U23, Toluca
+U23, Cruz Azul U23, Forge, Club Tijuana U23, El Paso Locomotive
+Teams within selected timeframe (18): Atlético de San Luis, Tigres UANL, Necaxa,
+Pumas UNAM, Mazatlán, León, Guadalajara, Atlas, Querétaro, Puebla, Cruz Azul,
+Monterrey, Pachuca, América, Toluca, Club Tijuana, Juárez, Santos Laguna
+Total players: 180
+
+League: MLS
+Teams (66): Columbus Crew, Seattle Sounders, New England, Orlando City,
+Cruzeiro, Atlanta United, Philadelphia Union, SJ Earthquakes, Vancouver
+Whitecaps, Nashville SC, New York RB, Corinthians, Colorado Rapids, Real Salt
+Lake, Minnesota United, Los Angeles FC, Austin FC, Portland Timbers, Dallas, St.
+Louis City , Sporting KC, Charlotte FC, Houston Dynamo, Cincinnati, Toronto,
+Chicago Fire, CF Montréal, Inter Miami, New York City, Tigres UANL, Talleres
+Córdoba, Fluminense, Vélez Sarsfield, Bahia, Ajaccio, Universitatea Craiova, DC
+United, Eupen, Motherwell, Los Angeles Galaxy, Heracles, Poole Town, Olimpia,
+Häcken, Pachuca, Crvena Zvezda, Haka, PAS Giannina, FC Košice, Columbus Crew 2,
+Rhode Island, Valour FC, Triestina, Kortrijk, Oakland Roots, Atlético Ottawa,
+Portland Timbers II, Deportivo Saprissa, Atlanta United II, Minnesota United II,
+SJ Earthquakes II, Birmingham Legion, Barcelona B, Inter Miami II, Toronto II,
+Zlín
+Teams within selected timeframe (29): Columbus Crew, Seattle Sounders, New
+England, Orlando City, Cincinnati, Atlanta United, Philadelphia Union, SJ
+Earthquakes, Vancouver Whitecaps, Nashville SC, New York RB, Los Angeles FC,
+Colorado Rapids, Real Salt Lake, Minnesota United, Austin FC, Portland Timbers,
+Dallas, St. Louis City , Sporting KC, Charlotte FC, Houston Dynamo, Chicago
+Fire, CF Montréal, Inter Miami, New York City, Toronto, Los Angeles Galaxy, DC
+United
+Total players: 254
+
+League: PremierLeague
+Teams (28): Wolverhampton Wanderers, Arsenal, Everton, Crystal Palace,
+Bournemouth, Fulham, Liverpool, Manchester United, West Ham United, Tottenham
+Hotspur, Aston Villa, Newcastle United, Brighton, Luton Town, Nottingham Forest,
+Sheffield United, Manchester City, Brentford, Chelsea, Burnley, Middlesbrough,
+Galatasaray, Leeds United, Beşiktaş, Borussia Dortmund, Bayern München, Brighton
+U21, Monaco
+Teams within selected timeframe (20): Wolverhampton Wanderers, Arsenal, Everton,
+Crystal Palace, Bournemouth, Fulham, Liverpool, Manchester United, West Ham
+United, Tottenham Hotspur, Aston Villa, Newcastle United, Brighton, Luton Town,
+Nottingham Forest, Sheffield United, Manchester City, Brentford, Chelsea,
+Burnley
+Total players: 172
+
+League: SerieA
+Teams (31): Empoli, Lecce, Udinese, Napoli, Juventus, Lazio, Cagliari, Torino,
+Roma, Atalanta, Milan, Frosinone, Salernitana, Monza, Sassuolo, Fiorentina,
+Bologna, Hellas Verona, Internazionale, Genoa, Tottenham Hotspur, Como,
+Flamengo, Salzburg, Santos Laguna, Schalke 04, Montpellier, Slavia Praha, Fatih
+Karagümrük, Servette, Genoa U19
+Teams within selected timeframe (20): Empoli, Lecce, Udinese, Napoli, Juventus,
+Lazio, Cagliari, Torino, Roma, Atalanta, Milan, Frosinone, Salernitana, Monza,
+Sassuolo, Fiorentina, Bologna, Hellas Verona, Internazionale, Genoa
+Total players: 182
+
+
+===== GOALKEEPERS =====
+
+League: ArgentinaLPF
+Teams (37): Racing Club, Argentinos Juniors, Independiente, Vélez Sarsfield,
+Talleres Córdoba, River Plate, Newell's Old Boys, Rosario Central, Panetolikos
+FC, Belgrano, Atlético Tucumán, Municipal, Granada, Bolívar, Boca Juniors, Cerro
+Porteño, Instituto, Lanús, Estudiantes, Barracas Central, Huracán, Necaxa,
+Gimnasia La Plata, Aldosivi, San Lorenzo, Aucas, Unión Santa Fe, Atlético
+Nacional, Defensa y Justicia, Olimpo, Unión La Calera, Tigre, Tacuary, Arsenal,
+Deportes Iquique, Colón, Ferro Carril Oeste
+Teams within selected timeframe (28): Banfield, Godoy Cruz, Independiente,
+Atlético Tucumán, Talleres Córdoba, River Plate, Newell's Old Boys, Rosario
+Central, Huracán, Belgrano, Gimnasia La Plata, Platense, Arsenal, Racing Club,
+San Lorenzo, Colón, Barracas Central, Boca Juniors, Argentinos Juniors,
+Instituto, Lanús, Central Córdoba SdE, Unión Santa Fe, Sarmiento, Defensa y
+Justicia, Vélez Sarsfield, Tigre, Estudiantes
+Total players: 50
+
+League: LaLiga
+Teams (23): Getafe, Girona, Atlético Madrid, Rayo Vallecano, Valencia, Real
+Sociedad, Las Palmas, Villarreal, Mallorca, Athletic Bilbao, Deportivo Alavés,
+Almería, Osasuna, Real Betis, Celta de Vigo, Sevilla, Real Madrid, Real
+Valladolid, Barcelona, Cádiz, Betis Deportivo, Granada, Al Hilal
+Teams within selected timeframe (20): Getafe, Girona, Atlético Madrid, Rayo
+Vallecano, Valencia, Real Sociedad, Las Palmas, Villarreal, Mallorca, Athletic
+Bilbao, Deportivo Alavés, Almería, Osasuna, Real Betis, Celta de Vigo, Sevilla,
+Real Madrid, Granada, Barcelona, Cádiz
+Total players: 40
+
+League: LigaMX
+Teams (20): Pumas UNAM, América, Monterrey, León, Toluca, Puebla, Atlas,
+Pachuca, Tigres UANL, Mazatlán, Atlético de San Luis, Club Tijuana, Necaxa,
+Santos Laguna, Cruz Azul, Guadalajara, Querétaro, Juárez, Audax Italiano, El
+Paso Locomotive
+Teams within selected timeframe (18): Pumas UNAM, América, Monterrey, León,
+Toluca, Puebla, Atlas, Pachuca, Tigres UANL, Mazatlán, Atlético de San Luis,
+Club Tijuana, Necaxa, Santos Laguna, Cruz Azul, Guadalajara, Querétaro, Juárez
+Total players: 36
+
+League: MLS
+Teams (35): Houston Dynamo, Columbus Crew, Cincinnati, New York RB, Seattle
+Sounders, St. Louis City , Vancouver Whitecaps, Austin FC, Nashville SC, Orlando
+City, Inter Miami, Dallas, CF Montréal, Real Salt Lake, Atlanta United,
+Philadelphia Union, Minnesota United, Chicago Fire, Charlotte FC, Los Angeles
+Galaxy, DC United, New York City, SJ Earthquakes, Chelsea, Colorado Rapids,
+Sporting KC, Toronto, Portland Timbers, San Antonio, Sarpsborg 08, New England,
+Cesena, Vitesse, Los Angeles FC, Toronto II
+Teams within selected timeframe (29): Houston Dynamo, Columbus Crew, Cincinnati,
+New York RB, Seattle Sounders, St. Louis City , Vancouver Whitecaps, Austin FC,
+Nashville SC, Orlando City, Inter Miami, Dallas, CF Montréal, Real Salt Lake,
+Atlanta United, Philadelphia Union, Minnesota United, Chicago Fire, Charlotte
+FC, Los Angeles FC, DC United, New York City, SJ Earthquakes, New England,
+Colorado Rapids, Sporting KC, Toronto, Portland Timbers, Los Angeles Galaxy
+Total players: 62
+
+League: PremierLeague
+Teams (19): Tottenham Hotspur, Fulham, Manchester United, Everton, Luton Town,
+Brentford, Aston Villa, Wolverhampton Wanderers, Bournemouth, Arsenal,
+Manchester City, West Ham United, Liverpool, Burnley, Newcastle United, Chelsea,
+Brighton, Crystal Palace, Nottingham Forest
+Teams within selected timeframe (19): Tottenham Hotspur, Fulham, Manchester
+United, Everton, Luton Town, Brentford, Aston Villa, Wolverhampton Wanderers,
+Bournemouth, Arsenal, Manchester City, West Ham United, Liverpool, Burnley,
+Newcastle United, Chelsea, Brighton, Crystal Palace, Nottingham Forest
+Total players: 36
+
+League: SerieA
+Teams (20): Lecce, Hellas Verona, Genoa, Torino, Sassuolo, Juventus,
+Internazionale, Fiorentina, Bologna, Monza, Cagliari, Frosinone, Napoli, Lazio,
+Milan, Atalanta, Roma, Empoli, Udinese, Salernitana
+Teams within selected timeframe (20): Lecce, Hellas Verona, Genoa, Torino,
+Sassuolo, Juventus, Internazionale, Fiorentina, Bologna, Monza, Cagliari,
+Frosinone, Napoli, Lazio, Milan, Atalanta, Roma, Empoli, Udinese, Salernitana
+Total players: 44
+
+    \end{Verbatim}
+
+    \subsection{Creation of the Spider
+Plot}\label{creation-of-the-spider-plot}
+
+    A spider plot is a graphical method of displaying multivariate data in
+the form of a two-dimensional chart of three or more quantitative
+variables represented on axes starting from the same point. Reference:
+https://en.wikipedia.org/wiki/Radar\_chart By this, we will be able to
+identify how the groups of Leagues are performing in each position
+group.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{stats-spider-analysis_publication_files/stats-spider-analysis_publication_24_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{stats-spider-analysis_publication_files/stats-spider-analysis_publication_24_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{stats-spider-analysis_publication_files/stats-spider-analysis_publication_24_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{stats-spider-analysis_publication_files/stats-spider-analysis_publication_24_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Players that contribute the most to each
+Position.}\label{players-that-contribute-the-most-to-each-position.}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Top contributors for Forwards:
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{47}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                   Full name                 Team  \textbackslash{}
+356                      Sergio Gómez Martín      Manchester City
+43   Vinícius José Paixão de Oliveira Júnior          Real Madrid
+252                              Jérémy Doku      Manchester City
+336                            Manor Solomon    Tottenham Hotspur
+296                              Timo Werner    Tottenham Hotspur
+520                    Marcelo Javier Correa          Estudiantes
+821                             Emmanuel Iwe  Minnesota United II
+824                            Ronald Donkor          New York RB
+575             Juan Camilo Hernández Suárez        Columbus Crew
+572                            Denis Bouanga       Los Angeles FC
+
+    Team within selected timeframe Primary position  Market value  \textbackslash{}
+356                Manchester City             LAMF   \$10,000,000
+43                     Real Madrid               CF  \$180,000,000
+252                Manchester City             LAMF   \$65,000,000
+336              Tottenham Hotspur             LAMF   \$13,000,000
+296              Tottenham Hotspur             LAMF   \$17,000,000
+520                  Santos Laguna               CF    \$1,500,000
+821               Minnesota United               LW            \$0
+824                    New York RB               LW            \$0
+575                  Columbus Crew               CF   \$10,000,000
+572                 Los Angeles FC              LWF    \$6,000,000
+
+     Contribution Score                  Competition         League  \textbackslash{}
+356            1.703355               Premier League  PremierLeague
+43             1.584309                       LaLiga         LaLiga
+252            1.577975               Premier League  PremierLeague
+336            1.569641               Premier League  PremierLeague
+296            1.354659               Premier League  PremierLeague
+520            1.880927  Copa de la Liga Profesional         LigaMX
+821            1.608465                 MLS Next Pro            MLS
+824            1.546454                          MLS            MLS
+575            1.476523                          MLS            MLS
+572            1.434228                          MLS            MLS
+
+                    Group
+356  Top European Leagues
+43   Top European Leagues
+252  Top European Leagues
+336  Top European Leagues
+296  Top European Leagues
+520         LATAM Leagues
+821         LATAM Leagues
+824         LATAM Leagues
+575         LATAM Leagues
+572         LATAM Leagues
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Top contributors for Midfielders:
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{48}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                           Full name                Team  \textbackslash{}
+33                       Luka Modrić         Real Madrid
+77                       Pascal Groß            Brighton
+102                   Harvey Elliott           Liverpool
+23            Rodrigo Javier De Paul     Atlético Madrid
+358                 Hakan Çalhanoğlu      Internazionale
+140         Álvaro Fidalgo Fernández             América
+233      Héctor Miguel Herrera López      Houston Dynamo
+168  Richard Rafael Sánchez Guerrero             América
+270            Gastón Brugman Duarte  Los Angeles Galaxy
+194    Omar Andrés Fernández Frasica             Everton
+
+    Team within selected timeframe Primary position Market value  \textbackslash{}
+33                     Real Madrid            RCMF3   \$6,000,000
+77                        Brighton             LCMF   \$8,000,000
+102                      Liverpool            RCMF3  \$35,000,000
+23                 Atlético Madrid            RCMF3  \$30,000,000
+358                 Internazionale              DMF  \$45,000,000
+140                        América             LCMF   \$8,000,000
+233                 Houston Dynamo             LCMF   \$2,800,000
+168                        América             RCMF   \$6,000,000
+270             Los Angeles Galaxy             LCMF   \$2,000,000
+194                           León            RCMF3   \$1,000,000
+
+     Contribution Score       Competition         League                 Group
+33             2.140335            LaLiga         LaLiga  Top European Leagues
+77             1.909100    Premier League  PremierLeague  Top European Leagues
+102            1.747426    Premier League  PremierLeague  Top European Leagues
+23             1.605814           La Liga         LaLiga  Top European Leagues
+358            1.437930           Serie A         SerieA  Top European Leagues
+140            1.866876           Liga MX         LigaMX         LATAM Leagues
+233            1.713833               MLS            MLS         LATAM Leagues
+168            1.520374           Liga MX         LigaMX         LATAM Leagues
+270            1.242282               MLS            MLS         LATAM Leagues
+194            1.215859  Primera División         LigaMX         LATAM Leagues
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Top contributors for Defenders:
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{49}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                  Full name                 Team  \textbackslash{}
+946             Ahmed Touba                Lecce
+342              James Hill          Bournemouth
+963          Pietro Comuzzo           Fiorentina
+160           Mamadou Mbaye                Cádiz
+949          Jérôme Boateng          Salernitana
+1246  Elías Agustín Ramirez  Club Atlético Mitre
+1244   Álvaro Agustín Lagos     Atlético Tucumán
+1241  Pablo Ezequiel Aranda           Lanús Res.
+1219      Leonel Di Plácido             Botafogo
+778           Ousman Jabang          CF Montréal
+
+     Team within selected timeframe Primary position Market value  \textbackslash{}
+946                           Lecce              LCB   \$1,600,000
+342                     Bournemouth               LB   \$2,000,000
+963                      Fiorentina              LCB           \$0
+160                           Cádiz              LCB     \$400,000
+949                     Salernitana               CB     \$400,000
+1246              Gimnasia La Plata              RWB           \$0
+1244               Atlético Tucumán               RB     \$175,000
+1241                          Lanús               RB           \$0
+1219                          Lanús               RB     \$500,000
+778                     CF Montréal             RCB3           \$0
+
+      Contribution Score                 Competition         League  \textbackslash{}
+946             1.446647                     Serie A         SerieA
+342             1.406109              Premier League  PremierLeague
+963             1.399121                     Serie A         SerieA
+160             1.239974                      LaLiga         LaLiga
+949             1.235491                     Serie A         SerieA
+1246            2.507106            Primera Nacional   ArgentinaLPF
+1244            2.169053  Liga Profesional de Fútbol   ArgentinaLPF
+1241            2.121551              Reserve League   ArgentinaLPF
+1219            1.862870                     Serie A   ArgentinaLPF
+778             1.627827                         MLS            MLS
+
+                     Group
+946   Top European Leagues
+342   Top European Leagues
+963   Top European Leagues
+160   Top European Leagues
+949   Top European Leagues
+1246         LATAM Leagues
+1244         LATAM Leagues
+1241         LATAM Leagues
+1219         LATAM Leagues
+778          LATAM Leagues
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Top contributors for Goalkeepers:
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{50}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                              Full name                 Team  \textbackslash{}
+216                      Simone Perilli        Hellas Verona
+38               Jaume Doménech Sánchez             Valencia
+75                         Loris Karius     Newcastle United
+65                       Arijanet Murić              Burnley
+70                          Robin Olsen          Aston Villa
+167                      James Pantemis          CF Montréal
+170                      Andrew Tarbell       Houston Dynamo
+255  Cristopher Javier Fiermarin Forlán   Defensa y Justicia
+171                        Thomas Hasal  Vancouver Whitecaps
+107       Héctor Hipólito Holguín Pérez        Santos Laguna
+
+    Team within selected timeframe Primary position Market value  \textbackslash{}
+216                  Hellas Verona               GK     \$200,000
+38                        Valencia               GK     \$800,000
+75                Newcastle United               GK   \$1,000,000
+65                         Burnley               GK   \$7,000,000
+70                     Aston Villa               GK   \$1,500,000
+167                    CF Montréal               GK     \$400,000
+170                 Houston Dynamo               GK     \$150,000
+255             Defensa y Justicia               GK     \$300,000
+171            Vancouver Whitecaps               GK     \$500,000
+107                  Santos Laguna               GK     \$400,000
+
+     Contribution Score                 Competition         League  \textbackslash{}
+216            2.398890                     Serie A         SerieA
+38             1.823741                     La Liga         LaLiga
+75             1.768737              Premier League  PremierLeague
+65             1.556083              Premier League  PremierLeague
+70             1.129541              Premier League  PremierLeague
+167            1.379058                         MLS            MLS
+170            1.037262                         MLS            MLS
+255            1.002228  Liga Profesional de Fútbol   ArgentinaLPF
+171            0.957285                         MLS            MLS
+107            0.915153                     Liga MX         LigaMX
+
+                    Group
+216  Top European Leagues
+38   Top European Leagues
+75   Top European Leagues
+65   Top European Leagues
+70   Top European Leagues
+167         LATAM Leagues
+170         LATAM Leagues
+255         LATAM Leagues
+171         LATAM Leagues
+107         LATAM Leagues
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{Considerations}\label{considerations}
+
+    Some players may have a high contribution score but we must take into
+account minutes / matches played, another approach could be to filter
+only players who have played over certain amount of matches and/or
+minutes. Antoher important consideration is that at first the Min Max
+scaler was used to standarize the variables, but then it was changed to
+Robust Scaler.
+
+    \section{Conclusions}\label{conclusions}
+
+    To conclude the analysis, we can observe in general that Top 3 Europe
+leagues tend to have higher performance in almost every aspect of the
+game compared to LATAM leagues. This is evident in the aggregated
+metrics, the spider charts, and the top contributors' analysis.
+
+    \subsection{Highlights by Position Group - Personal
+perspective}\label{highlights-by-position-group---personal-perspective}
+
+    \subsubsection{Forwards:}\label{forwards}
+
+\begin{itemize}
+\tightlist
+\item
+  European forwards tend to excel in metrics related to offensive
+  effectiveness, especially in shots per 90, goals per 90, and touches
+  in the box per 90, reflecting a more aggressive attacking approach.
+\item
+  LATAM forwards show strengths in successful dribbles percentage,
+  indicating technical proficiency in one-on-one situations. However,
+  they lag in metrics tied directly to goal-scoring efficiency, such as
+  xG (expected goals) and shots per 90.
+\end{itemize}
+
+\subsubsection{Midfielders:}\label{midfielders}
+
+\begin{itemize}
+\tightlist
+\item
+  European midfielders outperform in key passing metrics, including key
+  passes per 90 and passes per 90, suggesting a structured playmaking
+  style with high passing accuracy.
+\item
+  LATAM midfielders demonstrate relatively high progressive passes,
+  highlighting creative contributions despite fewer overall passes,
+  which may imply a more direct style with lower possession but
+  impactful plays.
+\end{itemize}
+
+\subsubsection{Defenders:}\label{defenders}
+
+\begin{itemize}
+\tightlist
+\item
+  LATAM defenders show higher averages in aerial duels per 90, Sliding
+  tackles and successful defensive actions, emphasizing a physical style
+  with more focus on defensive actions. But also high proportion of
+  Fouls.
+\item
+  European defenders excel in intercepting and blocking metrics, showing
+  a more controlled and tactical approach, which aligns with the
+  structured defensive systems often seen in top European leagues.
+\end{itemize}
+
+\subsubsection{Goalkeepers:}\label{goalkeepers}
+
+\begin{itemize}
+\tightlist
+\item
+  European goalkeepers lead in metrics related Prevented goals and
+  Exits, but also have a higher Conceded goals and xG against (Expected
+  goals against).
+\item
+  LATAM goalkeepers, excel in Save rate \%, even having conceded fewwer
+  goals.
+\end{itemize}
+
+\subsubsection{Overall Summary:}\label{overall-summary}
+
+\begin{itemize}
+\tightlist
+\item
+  European leagues generally focus on metrics that reflect structured,
+  possession-based play, with high performance in passing, goal-scoring
+  efficiency, and defensive positioning.
+\item
+  LATAM leagues display a more direct and physically engaging style,
+  with strengths in dribbling, aerial duels, and creative assists,
+  though they may be less efficient in metrics that benefit from
+  structured tactics or defensive depth.
+\end{itemize}
+
+    \subsection{What's next}\label{whats-next}
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  A lot of different configurations in the analysis can be made,
+  particularly with the selection of main variables and the scaler
+  method.
+\item
+  Further and deeper analysis must be made in regard to data quality,
+  since observations may still have issues to resolve.
+\end{enumerate}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

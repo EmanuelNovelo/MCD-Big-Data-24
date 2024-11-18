@@ -1,0 +1,35 @@
+((*- extends 'base.tplx' -*))
+
+% Custom LaTeX Preamble
+((* block docclass *))
+\documentclass[10pt]{article}
+((* endblock docclass *))
+
+((* block header *))
+% Page layout for poster style
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% Custom section fonts and colors
+\titleformat{\section}{\Large\bfseries\color{blue}}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries\color{black}}{\thesubsection}{1em}{}
+
+% Header and footer settings
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Scientific Poster Report}}
+\fancyhead[R]{\today}
+\fancyfoot[C]{\thepage}
+
+% Customize title
+\title{Analysis of European and LATAM Leagues - Player Metrics Comparison}
+\author{Your Name}
+((* endblock header *))
+
+((* block body *))
+% Body with modified section spacing
+\renewcommand{\baselinestretch}{1.2}
+((* super() *))
+((* endblock body *))
