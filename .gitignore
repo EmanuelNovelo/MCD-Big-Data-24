@@ -1,2 +1,3 @@
 echo "*.pyc" >> .gitignore
 echo "__pycache__/" >> .gitignore
+App - Project/data/football-players-DB.csv
