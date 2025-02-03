@@ -1,0 +1,132 @@
+Original Variable,Similar Terms
+Player,Player
+Full name,Full name
+Wyscout id,Wyscout id
+Team,Team
+Team within selected timeframe,Team within selected timeframe
+Team logo,Team logo
+Competition,Competition
+Position,Position
+Primary position,Primary position
+"Primary position, %","Primary position, %"
+Secondary position,Secondary position
+"Secondary position, %","Secondary position, %"
+Third position,Third position
+"Third position, %","Third position, %"
+Age,Age
+Birthday,Birthday
+Market value,Market value
+Contract expires,Contract expires
+Matches played,Matches played
+Minutes played,Minutes played
+Goals,"Goals, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+xG,xG
+Assists,"Assists, assists made, key passes leading to goals, number of assists, xA (expected assists), second assists, third assists"
+xA,xA
+Duels per 90,"Duels per 90, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+"Duels won, %","Duels won, %, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Birth country,Birth country
+Passport country,"Passport country, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Foot,Foot
+Height,Height
+Weight,Weight
+On loan,On loan
+Successful defensive actions per 90,Successful defensive actions per 90
+Defensive duels per 90,"Defensive duels per 90, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+"Defensive duels won, %","Defensive duels won, %, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Aerial duels per 9035,"Aerial duels per 9035, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+"Aerial duels won, %","Aerial duels won, %, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Sliding tackles per 90,Sliding tackles per 90
+PAdj Sliding tackles,PAdj Sliding tackles
+Shots blocked per 90,Shots blocked per 90
+Interceptions per 90,Interceptions per 90
+PAdj Interceptions,PAdj Interceptions
+Fouls per 90,Fouls per 90
+Yellow cards,Yellow cards
+Yellow cards per 90,Yellow cards per 90
+Red cards,Red cards
+Red cards per 90,Red cards per 90
+Successful attacking actions per 90,Successful attacking actions per 90
+Goals per 90,"Goals per 90, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Non-penalty goals,"Non-penalty goals, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Non-penalty goals per 90,"Non-penalty goals per 90, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+xG per 90,xG per 90
+Head goals,"Head goals, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Head goals per 90,"Head goals per 90, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Shots,Shots
+Shots per 90,Shots per 90
+"Shots on target, %","Shots on target, %"
+"Goal conversion, %","Goal conversion, %, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Assists per 90,"Assists per 90, assists made, key passes leading to goals, number of assists, xA (expected assists), second assists, third assists"
+Crosses per 90,"Crosses per 90, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+"Accurate crosses, %","Accurate crosses, %, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+Crosses from left flank per 90,"Crosses from left flank per 90, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+"Accurate crosses from left flank, %","Accurate crosses from left flank, %, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+Crosses from right flank per 90,"Crosses from right flank per 90, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+"Accurate crosses from right flank, %","Accurate crosses from right flank, %, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+Crosses to goalie box per 90,"Crosses to goalie box per 90, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Dribbles per 90,Dribbles per 90
+"Successful dribbles, %","Successful dribbles, %"
+Offensive duels per 90,"Offensive duels per 90, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+"Offensive duels won, %","Offensive duels won, %, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Touches in box per 90,Touches in box per 90
+Progressive runs per 90,"Progressive runs per 90, progressive runs, forward runs, attacking runs, distance covered in runs"
+Accelerations per 90,Accelerations per 90
+Received passes per 90,"Received passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Received long passes per 90,"Received long passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Fouls suffered per 90,Fouls suffered per 90
+Passes per 90,"Passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate passes, %","Accurate passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Forward passes per 90,"Forward passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate forward passes, %","Accurate forward passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Back passes per 90,"Back passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate back passes, %","Accurate back passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Short / medium passes per 90,"Short / medium passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate short / medium passes, %","Accurate short / medium passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Long passes per 90,"Long passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate long passes, %","Accurate long passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Average pass length, m","Average pass length, m, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Average long pass length, m","Average long pass length, m, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+xA per 90,xA per 90
+Shot assists per 90,"Shot assists per 90, assists made, key passes leading to goals, number of assists, xA (expected assists), second assists, third assists"
+Second assists per 90,"Second assists per 90, assists made, key passes leading to goals, number of assists, xA (expected assists), second assists, third assists"
+Third assists per 90,"Third assists per 90, assists made, key passes leading to goals, number of assists, xA (expected assists), second assists, third assists"
+Smart passes per 90,"Smart passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate smart passes, %","Accurate smart passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Key passes per 90,"Key passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Passes to final third per 90,"Passes to final third per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate passes to final third, %","Accurate passes to final third, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Passes to penalty area per 90,"Passes to penalty area per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate passes to penalty area, %","Accurate passes to penalty area, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Through passes per 90,"Through passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate through passes, %","Accurate through passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Deep completions per 90,Deep completions per 90
+Deep completed crosses per 90,"Deep completed crosses per 90, accurate crosses, crosses from left flank, crosses from right flank, crosses to goalie box, cross success rate"
+Progressive passes per 90,"Progressive passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate progressive passes, %","Accurate progressive passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+"Accurate vertical passes, %","Accurate vertical passes, %, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Vertical passes per 90,"Vertical passes per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Conceded goals,"Conceded goals, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Conceded goals per 90,"Conceded goals per 90, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Shots against,Shots against
+Shots against per 90,Shots against per 90
+Clean sheets,Clean sheets
+"Save rate, %","Save rate, %"
+xG against,xG against
+xG against per 90,xG against per 90
+Prevented goals,"Prevented goals, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Prevented goals per 90,"Prevented goals per 90, goals scored, number of goals, total goals, net goals, goals per match, goal count, achieved goals, head goals, shot goals"
+Back passes received as GK per 90,"Back passes received as GK per 90, passing accuracy, pass %, pass precision, accurate passes, successful passes, completion rate, forward passes, backward passes"
+Exits per 90,Exits per 90
+Aerial duels per 90119,"Aerial duels per 90119, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Free kicks per 90,Free kicks per 90
+Direct free kicks per 90,Direct free kicks per 90
+"Direct free kicks on target, %","Direct free kicks on target, %"
+Corners per 90,Corners per 90
+Penalties taken,Penalties taken
+"Penalty conversion, %","Penalty conversion, %"
+season,season
+league,league
+Aerial duels per 90,"Aerial duels per 90, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Aerial_Duels_per_90,"Aerial_Duels_per_90, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"
+Aerial duels per 90_1,"Aerial duels per 90_1, defensive duels, offensive duels, duel success rate, aerial duels, ground duels, successful duels"

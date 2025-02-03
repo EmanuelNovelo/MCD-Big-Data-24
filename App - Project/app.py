@@ -9,6 +9,8 @@ import json
 import os
 from datetime import datetime
 import plotly.graph_objects as go
+from transformers import pipeline
+import difflib
 
 # --------------------------------- py's functions --------------------------------------------------
 
@@ -513,11 +515,129 @@ def evolution_analysis_module(stats_list):
 
 
 
-# --------------------------------- Module 5: Recommendation System ------------------------------------------
+# --------------------------------- Module 5: Advanced Search ------------------------------------------
 
-def recommendation_system_module():
+"""# Primer intento - funciona pero Query match es deficiente
+def advanced_search_module():
+    st.markdown("<div class='card'><h3>Advanced Search</h3></div>", unsafe_allow_html=True)
 
-    st.info("This module is under construction.")
+    # Ensure the dataset is loaded in session_state
+    if 'dataset' not in st.session_state or st.session_state['dataset'] is None:
+        st.warning("Please load the dataset first in the Data Load module.")
+        return
+
+    # Load dataset
+    dataset = st.session_state['dataset']
+
+    # LLM model pipeline
+    @st.cache_resource
+    def load_llm():
+        return pipeline("text2text-generation", model="declare-lab/flan-alpaca-large")
+
+    llm = load_llm()
+
+    # Input field for natural language query
+    user_query = st.text_input("Enter your query (e.g., 'I want a young player with high dribbling and passing accuracy'):")
+
+    if user_query:
+        st.write("### Query Interpretation")
+
+        # Generate SQL-like query or filtering logic
+        prompt = f"Dataset columns: {', '.join(dataset.columns)}. Translate the following request into a filtering rule: {user_query}"
+        llm_response = llm(prompt, max_length=256)[0]['generated_text']
+
+        st.write(f"Generated Query: {llm_response}")
+
+        # Attempt to apply the query
+        try:
+            filtered_data = dataset.query(llm_response)
+            st.success("Data filtered successfully!")
+
+            # Display the filtered dataset
+            st.write("### Filtered Dataset")
+            st.dataframe(filtered_data)
+        except Exception as e:
+            st.error(f"An error occurred while applying the query: {e}")
+"""
+            
+def advanced_search_module():
+    st.markdown("<div class='card'><h3>Advanced Search</h3></div>", unsafe_allow_html=True)
+
+    # Ensure the dataset is loaded in session_state
+    if 'dataset' not in st.session_state or st.session_state['dataset'] is None:
+        st.warning("Please load the dataset first in the Data Load module.")
+        return
+
+    # Load dataset
+    dataset = st.session_state['dataset']
+
+    # Load similar terms CSV
+    similar_terms_path = './data/variables_similar_terms_full.csv'
+    try:
+        similar_terms_df = pd.read_csv(similar_terms_path)
+    except FileNotFoundError:
+        st.error(f"Could not find the file: {similar_terms_path}")
+        return
+
+    # Create a mapping of similar terms to original variables
+    term_to_variable = {}
+    for _, row in similar_terms_df.iterrows():
+        original = row['Original Variable']
+        similar_terms = row['Similar Terms'].split(', ')
+        for term in similar_terms:
+            term_to_variable[term.lower()] = original
+
+    # LLM model pipeline
+    @st.cache_resource
+    def load_llm():
+        return pipeline("text2text-generation", model="declare-lab/flan-alpaca-large")
+
+    llm = load_llm()
+
+    # Input field for natural language query
+    user_query = st.text_input("Enter your query (e.g., 'I want a young player with high dribbling and passing accuracy'):")
+
+    if user_query:
+        st.write("### Query Interpretation")
+
+        # Generate SQL-like query or filtering logic
+        prompt = f"Dataset columns: {', '.join(dataset.columns)}. Translate the following request into a filtering rule: {user_query}"
+        llm_response = llm(prompt, max_length=256)[0]['generated_text']
+
+        st.write(f"Generated Query: {llm_response}")
+
+        # Attempt to refine the query by matching to original variables
+        try:
+            # Extract tokens from the LLM-generated query
+            tokens = llm_response.lower().split()
+            matched_columns = []
+
+            for token in tokens:
+                if token in term_to_variable:
+                    matched_columns.append(term_to_variable[token])
+
+            if matched_columns:
+                st.write(f"### Matched Columns: {', '.join(set(matched_columns))}")
+
+                # Replace terms in the query with original variable names
+                for term, original in term_to_variable.items():
+                    llm_response = llm_response.replace(term, f"`{original}`")
+
+                # Apply the refined query to the dataset
+                filtered_data = dataset.query(llm_response)
+                st.success("Data filtered successfully!")
+
+                # Display the filtered dataset
+                st.write("### Filtered Dataset")
+                st.dataframe(filtered_data)
+            else:
+                st.warning("No columns matched the query keywords.")
+
+        except Exception as e:
+            st.error(f"An error occurred while applying the query: {e}")
+
+# Integrate the advanced_search_module into the main application.
+
 
 # -------------------------------- side bar de navegacion --------------------------------------------
 
@@ -561,7 +681,7 @@ def main():
         # Main menu
         main_option = option_menu(
             menu_title="Main Menu",
-            options=["Home Page", "Data Load", "Dashboard", "Cluster Analysis", "Evolution Analysis", "Recommendation System"],
+            options=["Home Page", "Data Load", "Dashboard", "Cluster Analysis", "Evolution Analysis", "Advanced Search"],
             icons=["cloud-upload", "bounding-box"],
             menu_icon="cast",
             default_index=0,
@@ -596,8 +716,8 @@ def main():
         dashboard_module(stats_list)
     elif main_option == "Evolution Analysis":
         evolution_analysis_module(stats_list)
-    elif main_option == "Recommendation System":
-        recommendation_system_module()
+    elif main_option == "Advanced Search":
+        advanced_search_module()
 
 
 if __name__ == "__main__":

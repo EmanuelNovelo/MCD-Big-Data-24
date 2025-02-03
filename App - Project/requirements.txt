@@ -3,3 +3,6 @@ streamlit-option-menu
 pandas
 pyspark
 plotly
+transformers
+torch
+difflib
